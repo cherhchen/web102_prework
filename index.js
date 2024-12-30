@@ -46,6 +46,7 @@ function addGamesToPage(games) {
             <p>${games[i].name}</p>
             <p>${games[i].description}</p>
             <p>Backers: ${games[i].backers}</p>
+            <p>Funded: ${games[i].pledged < games[i].goal ? "&#x2718" : "&#x2714"}</p>
         `
 
         // append the game to the games-container
@@ -174,9 +175,6 @@ const sortedGames =  GAMES_JSON.sort( (item1, item2) => {
 
 // use destructuring and the spread operator to grab the first and second games
 const [firstGame, secondGame, ...others] = sortedGames;
-console.log(firstGame)
-console.log(secondGame)
-console.log(others)
 
 // create a new element to hold the name of the top pledge game, then append it to the correct element
 const firstGameElement = document.createElement("div");
@@ -191,3 +189,21 @@ secondGameElement.innerHTML = `
     <p>${secondGame.name}</p>
 `
 secondGameContainer.append(secondGameElement);
+
+/************************************************************************************
+ * Bonus
+ * Search all games
+ */
+
+function searchGame() {
+    let input = document.getElementById("searchInput");
+    let filter = input.value.toLowerCase();
+    const matches = GAMES_JSON.filter( (game) => {
+        return game.name.toLowerCase().startsWith(filter);
+    });
+    deleteChildElements(gamesContainer);
+    addGamesToPage(matches);
+}
+
+const searchInput = document.getElementById("searchInput");
+searchInput.addEventListener("keyup", searchGame);
